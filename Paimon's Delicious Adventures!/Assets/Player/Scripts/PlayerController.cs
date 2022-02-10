@@ -14,10 +14,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Text moraText;
     [SerializeField] private int stone;
     [SerializeField] private Text stoneText;
+    [SerializeField] private int recipe;
+    [SerializeField] private Text recipeText;
+    [SerializeField] private GameObject winPanel;
+    // [SerializeField] private GameObject losePanel;
+    // [SerializeField] private GameObject healthBar;
 
     private int lineToMove = 1;
     public float lineDistance = 4; 
     private float maxSpeed = 110;
+    private int gloat = 4;
 
     void Start()
     {
@@ -25,6 +31,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(SpeedIncrease());
         moraText.text = ": " + mora.ToString();
         stoneText.text = ": " + stone.ToString();
+        recipeText.text = ": " + recipe.ToString() + "/4";
     }
 
     private void Update()
@@ -80,7 +87,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(3);
         if(speed < maxSpeed)
         {
-           speed += 2;
+            speed += 2;
             StartCoroutine(SpeedIncrease()); 
         }
     }
@@ -100,5 +107,23 @@ public class PlayerController : MonoBehaviour
             stoneText.text = ": " + stone.ToString();
             Destroy(other.gameObject);
         }
+
+        if(other.gameObject.tag == "Recipe")
+        {
+            recipe++;
+            recipeText.text = ": " + recipe.ToString() + "/4";
+            Destroy(other.gameObject);
+        }
+
+        if(recipe == gloat)
+        {
+            winPanel.SetActive(true);
+            Time.timeScale = 0;
+        }
     }
+
+    // private void OnControllerColiderHit(ControllerColiderHit hit)
+    // {
+
+    // }
 }
